@@ -11,9 +11,6 @@ import networkx as nx
 from mne.time_frequency import tfr_array_morlet
 from mne.baseline import rescale
 
-from scipy.stats import ttest_ind
-from scipy.stats import t as student_t
-from mne.stats import fdr_correction
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.patches import Rectangle
 import shutil
@@ -35,7 +32,7 @@ os.makedirs(fig_path, exist_ok=True)
 
 def main():
 
-    seed = 14
+    seed = 52
     set_seed(seed)
 
     dataset = "camcan"
@@ -69,14 +66,14 @@ def main():
     #n_channels_plot = 12
     #plot_traces(real, gen, sample_idx=0, n_channels=n_channels_plot, offset=3.0, fs=fs, gen_color=plot_color) # SEED 1
 
-    #network_index = -1
-    #plot_psd(real, gen, dataset=dataset, anatomy_path=anatomy_path,
-    #         fs=fs, fs_cutoff=fs_cutoff, network_index=network_index,
-    #         gen_color=plot_color) # SEED 52
+    network_index = -1
+    plot_psd(real, gen, dataset=dataset, anatomy_path=anatomy_path,
+             fs=fs, fs_cutoff=fs_cutoff, network_index=network_index,
+             gen_color=plot_color) # SEED 52
 
     #plot_fc_graphs(real, gen, dataset=dataset, anatomy_path=anatomy_path, avg_networks=avg_networks) # SEED 1 & 16
     
-    plot_alpha_peak_topography(real, gen, out_path=out_path, fs=fs) # SEED 4
+    #plot_alpha_peak_topography(real, gen, out_path=out_path, fs=fs) # SEED 4
     
     #plot_tfr_comparison(real, gen, sfreq=fs, freqs=np.arange(1, 31), n_cycles=3, channel_idx=network_indices["SomMotB"][:10], use_coi=False)
 
@@ -250,7 +247,7 @@ def _psd_avg(data, fs, fs_cutoff=50):
     return freqs, np.mean(psd, axis=0), np.std(psd, axis=0)
 
 
-def get_pval(mean1, std1, n1, mean2, std2, n2):
+def get_t_stat(mean1, std1, n1, mean2, std2, n2):
     # t‐statistic
     se = np.sqrt(std1**2/n1 + std2**2/n2)
     t_stat = (mean1 - mean2) / se
@@ -261,9 +258,12 @@ def get_pval(mean1, std1, n1, mean2, std2, n2):
              + (std2**2/n2)**2 / (n2 - 1) )
     df = df_num / df_den
 
-    # two‐sided p‐value
-    p_val = 2 * student_t.sf(np.abs(t_stat), df)
-    return t_stat, df, p_val
+    return t_stat, df
+
+
+def bayes_factor01_bic(t_stat, df, n_total):
+    # BIC approximation to the Bayes factor for the point null.
+    return np.sqrt(n_total) * (1.0 + (t_stat**2) / df) ** (-0.5 * n_total)
 
 
 def plot_psd(real_data, gen_data, dataset, anatomy_path=None,
@@ -322,21 +322,25 @@ def plot_psd(real_data, gen_data, dataset, anatomy_path=None,
         ax.fill_between(freqs, psd_g-std_g, psd_g+std_g,
                              alpha=0.2, label="_nolegend_", color=gen_color)
 
-        # compute pointwise p-values (Welch’s) + FDR
-        pvals = []
+        # compute pointwise Bayes factors (null vs alternative) with correction
+        t_stats = []
+        dfs = []
         for i in range(len(freqs)):
-            _, _, p = get_pval(
+            t_stat, df = get_t_stat(
                 psd_r[i], std_r[i], real_sub.shape[0],
                 psd_g[i], std_g[i],  gen_sub.shape[0]
             )
-            pvals.append(p)
-        pvals = np.array(pvals)
-        pvals = fdr_correction(pvals)[1]
-        pvals = np.clip(pvals, 0, 1)
+            t_stats.append(t_stat)
+            dfs.append(df)
+        t_stats = np.array(t_stats)
+        dfs = np.array(dfs)
 
-        # identify significant frequencies with stars at bottom
-        sig = pvals < 0.05
-        ax.plot(freqs[sig], np.ones(sig.sum()) * (ax.get_ylim()[0] + 0.01),
+        bf01 = bayes_factor01_bic(t_stats, dfs, real_sub.shape[0] + gen_sub.shape[0])
+
+        # mark frequencies with evidence for the null (Jeffreys' scale)
+        print(bf01)
+        support_null = bf01 >= 3.0
+        ax.plot(freqs[support_null], np.ones(support_null.sum()) * (ax.get_ylim()[0] + 0.01),
                 marker="*", linestyle="None", color="black", markersize=3,)
 
     # 5) finalize axes
