@@ -1,9 +1,9 @@
 
 wandb:
   project: aefp
-  entity: maxencelapatrie
-  tags: [encoder, ts, lattice, omega]
-  mode: online
+  entity: # TODO
+  tags: [encoder, omega]
+  mode: disabled
 
 base:
   seed: null # assigns a random seed
