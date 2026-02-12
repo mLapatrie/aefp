@@ -38,7 +38,7 @@ If you have any questions or require help with this repository. Please do not he
 
 Additionally, I welcome any feedback on the paper or the repository.
 
-Email me at maxence (dot) lapatrie (at) mail (dot) mcgill (dot) ca
+Email me at maxence (dot) lapatrie (at) mail (dot) mcgill (dot) ca. 
 Or message me on LinkedIn [maxence-lapatrie](https://www.linkedin.com/in/maxence-lapatrie/)
 
 
