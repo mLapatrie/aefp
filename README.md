@@ -38,8 +38,8 @@ If you have any questions or require help with this repository. Please do not he
 
 Additionally, I welcome any feedback on the paper or the repository.
 
-Email me at maxence (dot) lapatrie (at) mail (dot) mcgill (dot) ca. 
-Or message me on LinkedIn [maxence-lapatrie](https://www.linkedin.com/in/maxence-lapatrie/)
+Email me at maxence (dot) lapatrie (at) mail (dot) mcgill (dot) ca.<br>
+Or message me on LinkedIn [maxence-lapatrie](https://www.linkedin.com/in/maxence-lapatrie/).
 
 
 ## Preprocessing
@@ -49,9 +49,9 @@ Additionally, [MNE-python](https://mne.tools/stable/index.html) can be used as w
 
 Preprocessing files can be found under `preprocessing`.
 
-The `MEGDataset` object in `aefp/datasets/meg_dataset.py` will try to find the sensor data, the imaging kernel, the interpolation kernel, and a parcel definition file to save the parcellated, source-reconstructed data. It then saves the preprocessed files for faster booting. The sensor data and both kernels come directly from the Brainstorm or MNE preprocessing. The parcel definition depends on the participant's anatomy. We provide two default anatomy parcel definition files, one for Brainstorm and one for MNE under `preprocessing/camcan/tess_cortex_pial_low.mat` and `preprocessing/omega/Schaefer2018_200_17networks_labels.txt` respectively.
+The `MEGDataset` object in `aefp/datasets/meg_dataset.py` will try to find the sensor data, the imaging kernel, the interpolation kernel, and a parcel definition file to save the parcellated, source-reconstructed data. It then saves the preprocessed files for faster booting. The sensor data and both kernels come directly from the Brainstorm or MNE preprocessing. The parcel definition depends on the participant's anatomy. We provide two default anatomy parcel definition files, one for Brainstorm and one for MNE, under `preprocessing/camcan/tess_cortex_pial_low.mat` and `preprocessing/omega/Schaefer2018_200_17networks_labels.txt` respectively.
 
-The `MEGDataset` object in `aefp/datasets/meg_dataset.py` expects a BIDS-like hierarchy where the final file is the preprocessed PyTorch tensor (.pt). The scripts under `preprocessing` help you generate this structure. We provide an example directory strucure which the dataset object expects.
+The `MEGDataset` object in `aefp/datasets/meg_dataset.py` expects a BIDS-like hierarchy where the final file is the preprocessed PyTorch tensor (.pt). The scripts under `preprocessing` help you generate this structure. We provide an example directory structure that the dataset object expects.
 
 
 ### Directory Tree
