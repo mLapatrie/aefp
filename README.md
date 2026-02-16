@@ -2,13 +2,25 @@
 
 ![Overview Figure](paper_figures/fig1%20-%20visual%20abstract.png)
 
-Code for the paper ["Unsupervised Representation Learning Generates Differentiable Neurophysiological Profiles"](#TODO) (PREPRINT, SUBJECT TO CHANGES), (2026).
+Code for the paper ["Unsupervised Representation Learning Generates Differentiable Neurophysiological Profiles"](https://www.biorxiv.org/content/10.64898/2026.02.10.705127v1) (PREPRINT, SUBJECT TO CHANGES), (2026).
 
 ## Cite
 If you use this code or model in your research, please cite the following paper:
+
+> **Unsupervised Representation Learning Generates Differentiable Neurophysiological Profiles**
+> Maxence Lapatrie, Jason da Silva Castanheira, Idil Aydin, Sylvain Baillet.
+> *bioRxiv* 2026.02.10.705127; doi: https://doi.org/10.64898/2026.02.10.705127
+
 ```bibtex
-@article{
- #TODO
+@article{lapatrie_unsupervised_2026,
+    title = {Unsupervised Representation Learning Generates Differentiable Neurophysiological Profiles},
+    author = {Lapatrie, Maxence and Castanheira, Jason da Silva and Aydin, Idil and Baillet, Sylvain},
+    year = {2026},
+    month = {feb},
+    journal = {bioRxiv},
+    publisher = {Cold Spring Harbor Laboratory},
+    doi = {10.64898/2026.02.10.705127},
+    url = {[https://www.biorxiv.org/content/10.64898/2026.02.10.705127v1](https://www.biorxiv.org/content/10.64898/2026.02.10.705127v1)}
 }
 ```
 
